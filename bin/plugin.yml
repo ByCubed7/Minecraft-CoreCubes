@@ -1,0 +1,14 @@
+author: ByCubed7
+description: A simple dynamic Core mod by ByCubed7.
+
+version: 3.1.1
+api-version: 1.18
+
+website: ByCubed7.github.io/commissions/plugins
+
+# Impo
+main: io.github.bycubed7.corecubes.Main
+name: CoreCubes
+prefix: CoreCubes
+
+load: POSTWORLD
