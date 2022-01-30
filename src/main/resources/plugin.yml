@@ -1,7 +1,7 @@
 author: ByCubed7
 description: A simple dynamic Core mod by ByCubed7.
 
-version: 3.1.1
+version: ${project.version}
 api-version: 1.18
 
 website: ByCubed7.github.io/commissions/plugins
