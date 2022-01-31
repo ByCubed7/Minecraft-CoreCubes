@@ -1,5 +1,8 @@
 package io.github.bycubed7.corecubes.managers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,6 +14,8 @@ public class Debug {
 	public static String prefix;
 	public static String version;
 	public static String serverVersion;
+
+	public static List<String> banner = new ArrayList<String>();
 
 	public Debug(JavaPlugin plugin) {
 		prefix = "[" + plugin.getDescription().getPrefix() + "] ";
@@ -35,16 +40,19 @@ public class Debug {
 
 	public static void Banner() {
 
-		// .sendMessage(ChatColor.DARK_GRAY + "Reload Complete");
 		ChatColor c = ChatColor.GRAY;
 		ChatColor a = ChatColor.DARK_GRAY;
 		ChatColor v = ChatColor.DARK_GREEN;
 
-		logger.sendMessage(c + "");
-		logger.sendMessage(c + "");
-		logger.sendMessage(c + "" + v + " v" + Debug.version);
-		logger.sendMessage(v + "  Running on " + Debug.serverVersion + a + "   ~ By ByCubed7");
-		logger.sendMessage("");
+		int i = 0;
+		for (String str : banner) {
+			if (i + 1 == banner.size())
+				logger.sendMessage(c + str + v + " v" + Debug.version);
+			else
+				logger.sendMessage(c + str);
+			i++;
+		}
+		logger.sendMessage(v + "  Running on " + Debug.serverVersion + a + "  ~ By ByCubed7");
 	}
 
 }
