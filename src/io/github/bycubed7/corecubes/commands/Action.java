@@ -9,38 +9,37 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.bycubed7.corecubes.managers.Debug;
 import io.github.bycubed7.corecubes.managers.Tell;
 
-public class Action implements CommandExecutor {
+public abstract class Action implements CommandExecutor {
 
 	// TODO: Move this to a language class of sorts
-	private static String responseNonPlayer = "A player must use this command.";
-	private static String responsePermission = "You do not have permission to use this command.";
+	protected static String responseNonPlayer = "A player must use this command.";
+	protected static String responsePermission = "You do not have permission to use this command.";
 
 	protected JavaPlugin plugin;
 
-	protected String prefix;
 	protected String name;
+	protected String prefix;
 	protected String description;
-
-	final public String name() {
-		return name;
-	}
-
-	final public String prefix() {
-		return prefix;
-	}
-
-	public String description() {
-		return description;
-	}
 
 	public Action(String _name, JavaPlugin _plugin) {
 		plugin = _plugin;
 		prefix = plugin.getDescription().getPrefix();
 		name = _name;
-
-		// plugin.getDescription().getCommands().toString()
-
 		description = (String) plugin.getDescription().getCommands().get(name.toLowerCase()).get("description");
+
+		plugin.getCommand(name).setExecutor(this);
+	}
+
+	final public String getName() {
+		return name;
+	}
+
+	final public String getPrefix() {
+		return prefix;
+	}
+
+	final public String getDescription() {
+		return description;
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class Action implements CommandExecutor {
 
 		// Check the commandSender is a player
 		if (!(sender instanceof Player)) {
-			Debug.Log(responseNonPlayer);
+			Debug.log(responseNonPlayer);
 			return true;
 		}
 
@@ -93,9 +92,7 @@ public class Action implements CommandExecutor {
 	 * @return Why player can not run the command (if any)
 	 * @see Action
 	 */
-	protected ActionFailed approved(Player player, String[] args) {
-		return ActionFailed.NONE;
-	}
+	abstract protected ActionFailed approved(Player player, String[] args);
 
 	/**
 	 * Execute the action / command.
@@ -105,8 +102,6 @@ public class Action implements CommandExecutor {
 	 * @return Whether the command completed successfully
 	 * @see Action
 	 */
-	protected boolean execute(Player player, String[] args) {
-		return true;
-	}
+	abstract protected boolean execute(Player player, String[] args);
 
 }
