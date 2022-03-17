@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.github.bycubed7.corecubes.managers.ConfigManager;
 import io.github.bycubed7.corecubes.managers.Debug;
 
 public abstract class CubePlugin extends JavaPlugin {
@@ -20,7 +19,7 @@ public abstract class CubePlugin extends JavaPlugin {
 		new Debug(this);
 
 		Debug.log("Reading Config..");
-		new ConfigManager(this, "default.yml");
+		//new ConfigManager(this, "CoreCube.yml");
 
 		onBoot();
 

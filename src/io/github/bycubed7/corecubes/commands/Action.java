@@ -1,15 +1,24 @@
 package io.github.bycubed7.corecubes.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.StringUtil;
 
 import io.github.bycubed7.corecubes.managers.Debug;
 import io.github.bycubed7.corecubes.managers.Tell;
+import io.github.bycubed7.corecubes.unit.Node;
 
-public abstract class Action implements CommandExecutor {
+public abstract class Action implements CommandExecutor, TabCompleter {
 
 	// TODO: Move this to a language class of sorts
 	protected static String responseNonPlayer = "A player must use this command.";
@@ -18,16 +27,22 @@ public abstract class Action implements CommandExecutor {
 	protected JavaPlugin plugin;
 
 	protected String name;
-	protected String prefix;
+	protected String prefix; // <-- Needs plugin name for permissions
 	protected String description;
+
+	protected Node<String> uses;
 
 	public Action(String _name, JavaPlugin _plugin) {
 		plugin = _plugin;
-		prefix = plugin.getDescription().getPrefix();
 		name = _name;
-		description = (String) plugin.getDescription().getCommands().get(name.toLowerCase()).get("description");
 
-		plugin.getCommand(name).setExecutor(this);
+		description = (String) plugin.getDescription().getCommands().get(name.toLowerCase()).get("description");
+		uses = new Node<String>(name);
+
+		PluginCommand command = plugin.getCommand(name);
+
+		command.setExecutor(this);
+		command.setTabCompleter(this);
 	}
 
 	final public String getName() {
@@ -42,8 +57,17 @@ public abstract class Action implements CommandExecutor {
 		return description;
 	}
 
+	final public void addUse(String newUse) {
+		
+		//for (String sep : newUse.split(" ")) {
+			//uses.
+		//}
+		
+		uses.add(newUse);
+	}
+
 	@Override
-	final public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!command.getName().equalsIgnoreCase(name))
 			return true;
 
@@ -83,6 +107,57 @@ public abstract class Action implements CommandExecutor {
 		// return true;
 	}
 
+	@Override
+	public final List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (!command.getName().equalsIgnoreCase(name))
+			return null;
+
+		// Check the commandSender is a player
+		if (!(sender instanceof Player)) {
+			Debug.log(responseNonPlayer);
+			return null;
+		}
+
+		Player player = (Player) sender;
+
+		// Check the player has permission.
+		if (!player.hasPermission(prefix + ".*") && !player.hasPermission(prefix + "." + name)) {
+			Tell.player(player, responsePermission);
+			return null;
+		}
+		
+		// Is current command input valid?
+		//if (false)
+		// suggestions;
+
+		// "PLAYER CHANT INT"
+		
+		// Suggest possible completions, eg player names, enchants etc.
+		//for (String use : uses) {
+		//	boolean valid = true;
+		//	if (valid) suggestions.add(use);
+		//}
+
+		// Get the full input
+		String input = args[0];
+		for (int i = 1; i < args.length; i++) input = input + " " + args[i];
+		//input = input.strip();
+		
+		
+		// Get the expected inputs
+		List<String> usages = tab(player, command, args);
+
+		// Get the potential uses
+		List<String> potential = new ArrayList<String>();
+		for (String usage : usages) {
+			if (usage.contains(input)) 
+				//potential.add(usage.replace(input, "").strip().split(" ")[0]);
+				potential.add(usage.split(" ")[StringUtils.countMatches(input, " ")]);
+		}		
+		
+		return potential;
+	}
+
 	/**
 	 * Check to see whether the action can function, the player has permission and
 	 * any other checks required.
@@ -103,5 +178,7 @@ public abstract class Action implements CommandExecutor {
 	 * @see Action
 	 */
 	abstract protected boolean execute(Player player, String[] args);
+
+	abstract protected List<String> tab(Player player, Command command, String[] args);
 
 }

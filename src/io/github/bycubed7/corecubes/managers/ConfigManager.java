@@ -11,28 +11,24 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ConfigManager {
 
-	public static ConfigManager instance;
-
 	public JavaPlugin plugin;
 
 	// Config
 	private String filename;
 
-	private static File customConfigFile;
-	private static FileConfiguration config;
+	private File customConfigFile;
+	private FileConfiguration config;
 
 	public ConfigManager(JavaPlugin plugin, String filename) {
-		instance = this;
-
 		this.plugin = plugin;
 		this.filename = filename;
 
 		CreateConfig();
-
 	}
 
 	private void CreateConfig() {
 		customConfigFile = new File(plugin.getDataFolder(), filename);
+		
 		if (!customConfigFile.exists()) {
 			customConfigFile.getParentFile().mkdirs();
 			plugin.saveResource(filename, false);
@@ -46,23 +42,27 @@ public class ConfigManager {
 		}
 	}
 
-	public static FileConfiguration config() {
+	public FileConfiguration config() {
 		return config;
 	}
 
-	public static String getString(String path) {
+	public String getString(String path) {
 		return config.getString(path);
 	}
 
-	public static Integer getInt(String path) {
+	public Integer getInt(String path) {
 		return config.getInt(path);
 	}
 
-	public static Boolean getBool(String path) {
+	public Float getFloat(String path) {
+		return (float) config.getDouble(path);
+	}
+
+	public Boolean getBool(String path) {
 		return config.getBoolean(path);
 	}
 
-	public static Color getColor(String path) {
+	public Color getColor(String path) {
 		return config.getColor(path);
 	}
 }
