@@ -57,6 +57,20 @@ public class BiHashMap<K1, K2, V> {
 	}
 	
 	/**
+	 * Removes a key to which the specified key is mapped, or <code>null</code> if this map contains no mapping for
+	 * the key.
+	 * 
+	 * @param key1
+	 *            the first key whose associated value is to be removed
+	 * @return the value to which the specified key is mapped, or <code>null</code> if this map contains no mapping for
+	 *         the key
+	 * @see Map#remove(Object)
+	 */
+	public Map<K2, V> remove(K1 key1) {
+	    return mMap.remove(key1);
+	}
+	
+	/**
 	 * Returns <code>true</code> if this map contains a mapping for the specified key
 	 * 
 	 * @param key1
