@@ -6,8 +6,6 @@ public class Main extends CubePlugin {
 	@Override
 	protected void onManagers() {}
 	@Override
-	protected void onListeners() {}
-	@Override
 	protected void onCommands() {}
 	@Override
 	protected void onReady() {}

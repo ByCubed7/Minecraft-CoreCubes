@@ -1,7 +1,7 @@
 author: ByCubed7
 description: A simple dynamic Core mod by ByCubed7.
 
-version: 3.2.1-SNAPSHOT
+version: 3.3.7-SNAPSHOT
 api-version: 1.18
 
 website: ByCubed7.github.io/commissions/plugins
@@ -12,3 +12,7 @@ name: CoreCubes
 prefix: CoreCubes
 
 load: POSTWORLD
+
+commands:
+   corecubes:
+      description: Generic prefix command

@@ -2,15 +2,26 @@ package io.github.bycubed7.corecubes.unit;
 
 import java.io.Serializable;
 
-public class Vector2Int implements Serializable {
+import org.bukkit.Location;
+
+public class Vector2Int implements Convertable, Serializable {
 	private static final long serialVersionUID = 7228021146726359199L;
 
 	public Integer x;
 	public Integer y;
 
+	public Vector2Int() {
+		this.x = 0;
+		this.y = 0;
+	}
+
 	public Vector2Int(Integer x, Integer y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public static Vector2Int fromLocation(Location loc) {
+		return new Vector2Int(loc.getBlockX(), loc.getBlockZ());
 	}
 
 	public void add(Vector3Int otherVector) {
@@ -40,6 +51,13 @@ public class Vector2Int implements Serializable {
 	@Override
 	public String toString() {
 		return x.toString() + " " + y.toString();
+	}
+
+	@Override
+	public void fromString(String string) {
+		String[] dataSplit = string.split(" ");
+		x = Integer.parseInt(dataSplit[0]);
+		y = Integer.parseInt(dataSplit[1]);
 	}
 
 	@Override

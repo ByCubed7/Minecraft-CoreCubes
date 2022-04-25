@@ -1,52 +1,70 @@
 package io.github.bycubed7.corecubes.unit;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
-public class Node<T> {
-	private T value;
-	private List<Node<T>> children;
+public class Node<T> implements Iterable<Node<T>> {
+	public T data;
+	public Node<T> parent;
+	public List<Node<T>> children;
 
-	public Node(T _value) {
-		setValue(_value);
+	public boolean isRoot() {
+		return parent == null;
 	}
 
-	public T getValue() {
-		return value;
+	public boolean isLeaf() {
+		return children.size() == 0;
 	}
 
-	public void setValue(T value) {
-		this.value = value;
+	private List<Node<T>> elementsIndex;
+
+	public Node(T data) {
+		this.data = data;
+		this.children = new LinkedList<Node<T>>();
+		this.elementsIndex = new LinkedList<Node<T>>();
+		this.elementsIndex.add(this);
 	}
 
-	public int size() {
-		return children.size();
+	public Node<T> addChild(T child) {
+		Node<T> childNode = new Node<T>(child);
+		childNode.parent = this;
+		this.children.add(childNode);
+		this.registerChildForSearch(childNode);
+		return childNode;
 	}
 
-	public boolean isEmpty() {
-		return size() == 0;
+	public int getLevel() {
+		if (this.isRoot())
+			return 0;
+		else
+			return parent.getLevel() + 1;
 	}
 
-	public boolean contains(T node) {
-		return children.contains(node);
+	private void registerChildForSearch(Node<T> node) {
+		elementsIndex.add(node);
+		if (parent != null)
+			parent.registerChildForSearch(node);
 	}
 
-	public Node<T> get(String byValue) {
-		return children.get(0);
+	public Node<T> findNode(Comparable<T> cmp) {
+		for (Node<T> element : this.elementsIndex) {
+			T elData = element.data;
+			if (cmp.compareTo(elData) == 0)
+				return element;
+		}
+
+		return null;
 	}
 
-	public boolean add(Node<T> node) {
-		return children.add(node);
+	@Override
+	public String toString() {
+		return data != null ? data.toString() : "[data null]";
 	}
 
-	public boolean add(T nodeValue) {
-		return children.add(new Node<T>(nodeValue));
-	}
-
-	public boolean remove(Node<T> node) {
-		return children.remove(node);
-	}
-
-	public void clear() {
-		children.clear();
+	@Override
+	public Iterator<Node<T>> iterator() {
+		NodeIter<T> iter = new NodeIter<T>(this);
+		return iter;
 	}
 }

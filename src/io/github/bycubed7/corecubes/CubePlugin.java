@@ -6,17 +6,25 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.bycubed7.corecubes.commands.Action;
+import io.github.bycubed7.corecubes.commands.PrefixAction;
 import io.github.bycubed7.corecubes.managers.Debug;
 
 public abstract class CubePlugin extends JavaPlugin {
 
 	public static CubePlugin instance;
-	public List<String> banner = new ArrayList<String>();
+	public List<String> banner;
+	public List<Action> actions;
 
+	//private PrefixAction prefixAction;
+	
 	@Override
 	public final void onEnable() {
 		instance = this;
 		new Debug(this);
+		
+		banner = new ArrayList<String>();
+		actions = new ArrayList<Action>();
 
 		Debug.log("Reading Config..");
 		//new ConfigManager(this, "CoreCube.yml");
@@ -26,12 +34,18 @@ public abstract class CubePlugin extends JavaPlugin {
 		Debug.log("Loading Managers..");
 		onManagers();
 
-		Debug.log("Loading Listeners..");
-		onListeners();
-
+		
+		
 		Debug.log("Loading Commands..");
 		onCommands();
-
+		
+		new PrefixAction(getDescription().getPrefix(), this);
+		
+		for (Action action : actions)
+			action.ready();
+		
+		
+		
 		Debug.log(ChatColor.GREEN + "Done!");
 		Debug.banner(this);
 		onReady();
@@ -48,8 +62,6 @@ public abstract class CubePlugin extends JavaPlugin {
 	protected abstract void onBoot();
 
 	protected abstract void onManagers();
-
-	protected abstract void onListeners();
 
 	protected abstract void onCommands();
 

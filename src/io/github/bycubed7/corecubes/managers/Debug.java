@@ -31,7 +31,11 @@ public class Debug {
 	}
 
 	public static void error(String s) {
+		log(ChatColor.RED +"ERROR: " + s);
+	}
 
+	public static void warn(String s) {
+		log(ChatColor.YELLOW +"WARNING: " + s);
 	}
 
 	public static void banner(CubePlugin plugin) {

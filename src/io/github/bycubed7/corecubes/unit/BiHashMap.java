@@ -80,10 +80,27 @@ public class BiHashMap<K1, K2, V> {
 	 * @return Returns true if this map contains a mapping for the specified key
 	 * @see Map#containsKey(Object)
 	 */
+	
 	public boolean containsKeys(K1 key1, K2 key2) {
 	    return mMap.containsKey(key1) && mMap.get(key1).containsKey(key2);
 	}
 	
+	/**
+	 * Returns <code>true</code> if this map contains a mapping for the specified key
+	 * 
+	 * @param key1
+	 *            the first key whose presence in this map is to be tested
+	 * @param key2
+	 *            the second key whose presence in this map is to be tested
+	 * @return Returns true if this map contains a mapping for the specified key
+	 * @see Map#containsKey(Object)
+	 */
+	public boolean containsKey(K1 key1) {
+	    return mMap.containsKey(key1);
+	}
+	
+	/** Removes all of the mappings from this map (optional operation).The map will be empty after this call returns.
+	 */
 	public void clear() {
 	    mMap.clear();
 	}

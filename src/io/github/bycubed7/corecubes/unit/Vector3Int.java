@@ -4,12 +4,18 @@ import java.io.Serializable;
 
 import org.bukkit.Location;
 
-public class Vector3Int implements Serializable {
+public class Vector3Int implements Convertable, Serializable {
 	private static final long serialVersionUID = -5050345705306273983L;
 
 	public Integer x;
 	public Integer y;
 	public Integer z;
+
+	public Vector3Int() {
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+	}
 
 	public Vector3Int(Integer x, Integer y, Integer z) {
 		this.x = x;
@@ -51,6 +57,14 @@ public class Vector3Int implements Serializable {
 	@Override
 	public String toString() {
 		return x.toString() +" "+ y.toString() +" "+ z.toString();
+	}
+
+	@Override
+	public void fromString(String string) {
+		String[] dataSplit = string.split(" ");
+		x = Integer.parseInt(dataSplit[0]);
+		y = Integer.parseInt(dataSplit[1]);
+		z = Integer.parseInt(dataSplit[2]);
 	}
 
 	@Override
