@@ -3,7 +3,7 @@
   
   <groupId>io.github.bycubed7</groupId>
   <artifactId>corecubes</artifactId>
-  <version>3.3.7-SNAPSHOT</version>
+  <version>3.3.8-SNAPSHOT</version>
   
   <name>CoreCubes</name>
   <description>Some Common code for a few of my plugins so I stop reinventing the wheel for myself</description>

@@ -1,9 +1,11 @@
 package io.github.bycubed7.corecubes.commands;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
@@ -199,6 +201,9 @@ public abstract class Action implements CommandExecutor, TabCompleter {
 		List<ActionUse> uses = completeUses(input);
 
 		if (uses.size() == 0) return null;//new HashMap<String, String>();
+		
+		uses = uses.stream().sorted(Comparator.comparing(ActionUse::size)).collect(Collectors.toList());
+		
 		
 		return uses.get(0).mapOut(input);
 	}

@@ -26,6 +26,10 @@ public class ActionUse {
 		maxArgumentSize = oldActionUse.maxArgumentSize;
 	}
 	
+	public int size() {
+		return maxArgumentSize;
+	}
+	
 	public static ActionUse create() {
 		return new ActionUse();
 	}
@@ -44,7 +48,9 @@ public class ActionUse {
 			
 	// Return whether the string could be a valid command
 	public boolean canComplete(String input) {
-		int count = StringUtils.countMatches(input, " ");
+		int count = 0;
+		if (!input.isBlank()) 
+			count = StringUtils.countMatches(input, " ") + 1;
 		
 		// Is size above parameter amount
 		if (count > maxArgumentSize) return false;
@@ -69,9 +75,12 @@ public class ActionUse {
 	}
 	
 	public boolean isComplete(String input) {
-		int count = StringUtils.countMatches(input, " ") + 1;
+		int count = 0;
+		if (!input.isBlank()) 
+			count = StringUtils.countMatches(input, " ") + 1;
 		
-		// Is size above parameter amount
+		// Is size the same parameter amount
+		//Debug.log(""+count+" vs "+ maxArgumentSize);
 		if (count != maxArgumentSize) return false;
 		
 		// Check the varibles have been added
@@ -82,14 +91,17 @@ public class ActionUse {
 			Arg arg = arguments.get(i);
 			if (arg.isVariable()) {
 				//fullarg = args
-				String[] args = Arrays.copyOfRange(inputSplit, index, arg.getSize());
+				String[] args = Arrays.copyOfRange(inputSplit, index, index + arg.getSize());
 
-				if (!arg.getValue().equalsIgnoreCase(String.join(" ", args)))
-					return false;
+				if (!arg.getValue().equalsIgnoreCase(String.join(" ", args))) {
+					Debug.log("arg.getValue().equalsIgnoreCase(String.join(\" \", args))");
+					return false;					
+				}
 			}
 			else {
-				String[] args = Arrays.copyOfRange(inputSplit, index, arg.getSize());
+				String[] args = Arrays.copyOfRange(inputSplit, index, index+arg.getSize());
 				String value = String.join(" ", args);
+				
 				if (value.strip() == "") return false;
 			}
 			
