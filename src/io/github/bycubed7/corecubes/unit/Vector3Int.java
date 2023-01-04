@@ -33,6 +33,12 @@ public class Vector3Int implements Convertable, Serializable {
 		z += otherVector.z;
 	}
 
+	public void add(int x1, int y1, int z1) {
+		x += x1;
+		y += y1;
+		z += z1;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 

@@ -1,0 +1,18 @@
+author: ByCubed7
+website: ByCubed7.github.io/commissions/plugins
+
+version: ${project.version}
+api-version: 1.18
+
+
+# Impo
+main: ${project.groupId}.${project.artifactId}.${project.name}
+name: ${project.name}
+description: ${project.description}
+prefix: ${project.name}
+
+load: STARTUP
+
+commands:
+   corecubes:
+      description: Generic prefix command

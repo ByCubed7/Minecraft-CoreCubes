@@ -2,7 +2,6 @@ package io.github.bycubed7.corecubes.commands;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -111,6 +110,7 @@ public abstract class Action implements CommandExecutor, TabCompleter {
 		}
 
 		// Is the command required to be ran from a player
+		// TODO: Make the command runnable from the console
 		if (requiresPlayer) {
 			Debug.warn("A player must use this command.");
 			return false;				
@@ -134,6 +134,22 @@ public abstract class Action implements CommandExecutor, TabCompleter {
 		return description;
 	}
 	
+	final public CubePlugin getPlugin() {
+		return plugin;
+	}
+
+	final public boolean getRequiresPlayer() {
+		return requiresPlayer;
+	}
+
+	final public List<ActionUse> getArguments() {
+		return arguments;
+	}
+
+	final public PluginCommand getCommand() {
+		return command;
+	}
+	
 	// -- -- -- -- -- -- -- -- -- -- --
 	// Events
 
@@ -152,17 +168,25 @@ public abstract class Action implements CommandExecutor, TabCompleter {
 		
 		if (mapOut == null) {
 			Debug.error("Command `" + name + "` has no usages listed!");
-			return false;
+			return true;
 		}
 		
 		Execution actionError = approved(player, mapOut);
-		if (!actionError.failed) {
-			execute(player, mapOut);
-			return false;
+		if (actionError == null) {
+			Debug.error("Command `" + name + "` returned null when approving!");
+			actionError = Execution.NONE;
 		}
 		
-		Tell.player(player, actionError.reason);
-		return actionError.printUsage;
+		if (actionError.failed) {
+			Tell.player(player, actionError.reason);
+			// If false is returned, then the "usage" plugin.yml entry for this command(if defined) will be sent to the player.
+			return !actionError.printUsage;			
+		}
+		
+		String executionFeedback = execute(player, mapOut);
+		Tell.player(player, executionFeedback);
+		
+		return true;
 	}
 
 	@Override
@@ -203,7 +227,6 @@ public abstract class Action implements CommandExecutor, TabCompleter {
 		if (uses.size() == 0) return null;//new HashMap<String, String>();
 		
 		uses = uses.stream().sorted(Comparator.comparing(ActionUse::size)).collect(Collectors.toList());
-		
 		
 		return uses.get(0).mapOut(input);
 	}
@@ -254,10 +277,10 @@ public abstract class Action implements CommandExecutor, TabCompleter {
 	 *
 	 * @param player - the player who's activating the command
 	 * @param args   - the arguments the player has added into the command line
-	 * @return Whether the command completed successfully
+	 * @return Feedback for the player.
 	 * @see Action
 	 */
-	abstract protected boolean execute(Player player, Map<String, String> args);
+	abstract protected String execute(Player player, Map<String, String> args);
 	
 	
 
@@ -288,4 +311,5 @@ public abstract class Action implements CommandExecutor, TabCompleter {
 	public int hashCode() {
 		return name.hashCode();
 	}
+	
 }

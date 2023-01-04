@@ -52,7 +52,6 @@ public abstract class CubePlugin extends JavaPlugin {
 
 		// Using a schedular so that it runs once ALL plugins are loaded.
 		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-			@Override
 			public void run() {
 				onStart();
 			}

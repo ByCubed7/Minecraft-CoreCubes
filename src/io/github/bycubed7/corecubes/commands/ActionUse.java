@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import io.github.bycubed7.corecubes.commands.uses.Arg;
 import io.github.bycubed7.corecubes.managers.Debug;
 import io.github.bycubed7.corecubes.unit.Vector3Int;
 
@@ -21,6 +22,7 @@ public class ActionUse {
 		contents = new ArrayList<Arg>();
 	}
 	
+	// Copy constructor
 	public ActionUse(ActionUse oldActionUse) {
 		contents = new ArrayList<Arg>(oldActionUse.contents);
 		maxArgumentSize = oldActionUse.maxArgumentSize;
@@ -44,6 +46,10 @@ public class ActionUse {
 		maxArgumentSize += _argument.getSize();
 		contents.add(_argument);
 		return this;
+	}
+
+	public ActionUse add(String name, String value) {
+		return add(new Arg(name, value));
 	}
 			
 	// Return whether the string could be a valid command
@@ -73,7 +79,12 @@ public class ActionUse {
 		
 		return true;
 	}
-	
+
+	/**
+	 * Return whether the input is a completed AND valid command
+	 * @param input - the command input.
+	 * @return Whether the input is a completed AND valid command
+	 */
 	public boolean isComplete(String input) {
 		int count = 0;
 		if (!input.isBlank()) 
@@ -99,7 +110,7 @@ public class ActionUse {
 				}
 			}
 			else {
-				String[] args = Arrays.copyOfRange(inputSplit, index, index+arg.getSize());
+				String[] args = Arrays.copyOfRange(inputSplit, index, index + arg.getSize());
 				String value = String.join(" ", args);
 				
 				if (value.strip() == "") return false;
@@ -193,10 +204,8 @@ public class ActionUse {
 		
 		return useStrings;
 	}
-	
 
-	public List<String> getUse(int index, Player player) {
-		Arg argument = contents.get(index);
+	protected List<String> getUse(Arg argument, Player player) {
 		ArrayList<String> node = new ArrayList<String>();
 
 		String value = argument.getValue();
@@ -215,6 +224,10 @@ public class ActionUse {
 			node.add(value);
 		
 		return node;
+	}
+
+	private List<String> getUse(int index, Player player) {
+		return getUse(contents.get(index), player);
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 
 import io.github.bycubed7.corecubes.CubePlugin;
+import io.github.bycubed7.corecubes.commands.uses.Arg;
 
 public class PrefixAction extends Action {
 
@@ -24,7 +25,7 @@ public class PrefixAction extends Action {
 			
 			for (ActionUse actionArgumentsUse : actionArguments) {
 				ActionUse newActionUse = new ActionUse(actionArgumentsUse);
-				newActionUse.add(0, Arg.create("command", action.name.toLowerCase()));
+				newActionUse.add(0, new Arg("command", action.name));
 				
 				arguments.add(newActionUse);
 				//Debug.log(newActionUse.toString());
@@ -48,7 +49,7 @@ public class PrefixAction extends Action {
 	}
 
 	@Override
-	protected boolean execute(Player player, Map<String, String> args) {
+	protected String execute(Player player, Map<String, String> args) {
 		String targetCommand = args.get("command");
 		
 		// If we're just trying to run the command
@@ -59,7 +60,6 @@ public class PrefixAction extends Action {
 			}
 		}
 		
-		
-		return true;
+		return null;
 	}
 }

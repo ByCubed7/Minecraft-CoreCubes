@@ -1,0 +1,35 @@
+api:
+    # Twitch Application Client Id
+    # From https://dev.twitch.tv/console/apps/
+    id: YOUR_CLIENT_ID
+
+    # Twitch Application Client Secret
+    # From https://dev.twitch.tv/console/apps/
+    secret: YOUR_CLIENT_SECRET
+    
+    # Twitch User OAuth Password
+    # From https://twitchapps.com/tmi/
+    oauth: YOUR_OAUTH_PASSWORD
+
+users:
+  - twitch: ByCubed7
+    oauth2: 
+    minecraft: ByCubed7 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

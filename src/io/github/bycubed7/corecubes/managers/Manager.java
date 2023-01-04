@@ -9,15 +9,13 @@ public abstract class Manager implements Listener, Runnable {
 	
 	final protected CubePlugin plugin;
 	
-	int interaction = 20;
+	final protected int interaction = 20;
 
-	public Manager(CubePlugin _plugin) {
+	public Manager(CubePlugin _plugin, int interaction) {
 		plugin = _plugin;
 		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
-		plugin.getServer().getScheduler().runTaskTimer(plugin, this, 0, interaction);
+		
+		if (interaction != -1)
+			plugin.getServer().getScheduler().runTaskTimer(plugin, this, 0, interaction);
 	}
-	
-	
-	
-	
 }

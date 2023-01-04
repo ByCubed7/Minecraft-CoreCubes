@@ -1,6 +1,6 @@
 package io.github.bycubed7.corecubes;
 
-public class Main extends CubePlugin {
+public class CoreCubes extends CubePlugin {
 	@Override
 	protected void onBoot() {}
 	@Override

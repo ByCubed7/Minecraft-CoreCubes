@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import io.github.bycubed7.corecubes.commands.uses.Arg;
+
 public class ArgBuilder {
 
 	List<Arg> contents;
